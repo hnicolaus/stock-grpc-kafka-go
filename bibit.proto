@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package proto;
+
+option go_package = "/proto";
+
+service Bibit {
+    rpc GetStockSummary (GetStockSummaryRequest) returns (GetStockSummaryResponse);
+}
+
+message GetStockSummaryRequest {
+    string stockCode = 1;
+    string date = 2;
+}
+
+message GetStockSummaryResponse {
+    string stock_code = 1;
+    string date = 2;
+    int64 prev = 3;
+    int64 open = 4;
+    int64 high = 5;
+    int64 low = 6;
+    int64 close = 7;
+    int64 volume = 8;
+    int64 value = 9;
+    int64 average = 10;
+}

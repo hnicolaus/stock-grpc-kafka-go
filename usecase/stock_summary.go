@@ -6,16 +6,21 @@
 package usecase
 
 import (
+	"context"
+
 	"bibit.id/challenge/model"
 )
 
-func (uc *Usecase) UpdateStockSummary(transaction model.Transaction) error {
+func (uc *Usecase) UpdateStockSummary(ctx context.Context, transaction model.Transaction) error {
 	var (
 		stockCode       = transaction.StockCode
 		transactionDate = transaction.Date
 	)
 
-	summary, err := uc.stockRepo.GetStockSummary(stockCode, transactionDate)
+	summary, err := uc.stockRepo.GetStockSummary(ctx, model.GetStockSummaryRequest{
+		StockCode: stockCode,
+		Date:      transactionDate,
+	})
 	if err != nil {
 		return err
 	}
@@ -25,7 +30,7 @@ func (uc *Usecase) UpdateStockSummary(transaction model.Transaction) error {
 	}
 
 	if isUpdated, updatedSummary := summary.ApplyTransaction(transaction); isUpdated {
-		err = uc.stockRepo.SetStockSummary(stockCode, transactionDate, updatedSummary)
+		err = uc.stockRepo.SetStockSummary(ctx, updatedSummary)
 		if err != nil {
 			return err
 		}
@@ -34,11 +39,6 @@ func (uc *Usecase) UpdateStockSummary(transaction model.Transaction) error {
 	return nil
 }
 
-func (uc *Usecase) GetStockSummary(transaction model.Transaction) (model.Summary, error) {
-	var (
-		stockCode       = transaction.StockCode
-		transactionDate = transaction.Date
-	)
-
-	return uc.stockRepo.GetStockSummary(stockCode, transactionDate)
+func (uc *Usecase) GetStockSummary(ctx context.Context, request model.GetStockSummaryRequest) (model.Summary, error) {
+	return uc.stockRepo.GetStockSummary(ctx, request)
 }

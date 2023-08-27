@@ -1,14 +1,14 @@
 package usecase
 
 import (
-	"time"
+	"context"
 
 	"bibit.id/challenge/model"
 )
 
 type StockRepo interface {
-	GetStockSummary(stockCode string, date time.Time) (summary model.Summary, err error)
-	SetStockSummary(stockCode string, date time.Time, summary model.Summary) (err error)
+	GetStockSummary(ctx context.Context, request model.GetStockSummaryRequest) (summary model.Summary, err error)
+	SetStockSummary(ctx context.Context, stockSummary model.Summary) (err error)
 }
 
 type Usecase struct {

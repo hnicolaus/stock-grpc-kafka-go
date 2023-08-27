@@ -164,3 +164,8 @@ func (summary Summary) ApplyTransaction(transaction Transaction) (bool, Summary)
 	isUpdated = summary != updatedSummary
 	return isUpdated, updatedSummary
 }
+
+type GetStockSummaryRequest struct {
+	StockCode string
+	Date      time.Time
+}
