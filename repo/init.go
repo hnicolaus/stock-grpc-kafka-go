@@ -2,7 +2,7 @@ package repo
 
 import (
 	"context"
-	"fmt"
+	"log"
 	"time"
 
 	"github.com/go-redis/redis/v8"
@@ -25,9 +25,9 @@ func New() *Repo {
 	})
 
 	// Ping the Redis server to check if it's reachable
-	_, err := client.Ping(context.TODO()).Result()
+	_, err := client.Ping(context.Background()).Result()
 	if err != nil {
-		fmt.Println("Failed to connect to Redis:", err)
+		log.Print("Failed to connect to Redis:", err)
 		return nil
 	}
 

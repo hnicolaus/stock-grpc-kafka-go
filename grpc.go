@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net"
 
@@ -13,14 +12,14 @@ import (
 func serveGRPC(grpcHandler *handler.Handler) {
 	listen, err := net.Listen("tcp", ":50051")
 	if err != nil {
-		log.Fatalf("Failed to listen: %v", err)
+		log.Printf("[GRPC] Failed to listen to port 50051: %v", err)
 	}
 
 	grpcServer := grpc.NewServer()
 	proto.RegisterBibitServer(grpcServer, grpcHandler)
 
-	fmt.Println("GRPC server: listening on port 50051")
+	log.Print("[GRPC] Listening on port 50051")
 	if err := grpcServer.Serve(listen); err != nil {
-		log.Fatalf("Failed to serve: %v", err)
+		log.Fatalf("[GRPC] Failed to serve GRPC server: %v", err)
 	}
 }

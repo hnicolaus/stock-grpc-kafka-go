@@ -17,6 +17,7 @@ func (uc *Usecase) UpdateStockSummary(ctx context.Context, transaction model.Tra
 		transactionDate = transaction.Date
 	)
 
+	// Get stock summary by stockCode and date if alrady exists
 	summary, err := uc.stockRepo.GetStockSummary(ctx, model.GetStockSummaryRequest{
 		StockCode: stockCode,
 		Date:      transactionDate,
@@ -25,11 +26,11 @@ func (uc *Usecase) UpdateStockSummary(ctx context.Context, transaction model.Tra
 		return err
 	}
 
-	if summary == (model.Summary{}) {
-		summary.StockCode = stockCode
-	}
+	// Update stock summary data based on the transaction
+	isUpdated, updatedSummary := summary.ApplyTransaction(transaction)
 
-	if isUpdated, updatedSummary := summary.ApplyTransaction(transaction); isUpdated {
+	if isUpdated {
+		// Persist updated stock summary to our data store
 		err = uc.stockRepo.SetStockSummary(ctx, updatedSummary)
 		if err != nil {
 			return err

@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"os"
 	"os/signal"
@@ -19,11 +18,11 @@ func serveKafka(handler *handler.Handler) {
 
 	consumer, err := sarama.NewConsumer(brokers, config)
 	if err != nil {
-		log.Fatalf("Error creating consumer: %v", err)
+		log.Fatalf("[Error][Kafka] Failed creating consumer: %v", err)
 	}
 	defer func() {
 		if err := consumer.Close(); err != nil {
-			log.Printf("Error closing consumer: %v", err)
+			log.Printf("[Error][Kafka] Failed closing consumer: %v", err)
 		}
 	}()
 
@@ -31,24 +30,28 @@ func serveKafka(handler *handler.Handler) {
 
 	partitionConsumer, err := consumer.ConsumePartition(topic, 0, sarama.OffsetNewest)
 	if err != nil {
-		log.Fatalf("Error creating partition consumer: %v", err)
+		log.Fatalf("[Error][Kafka] Failed creating partition consumer: %v", err)
 	}
 	defer func() {
 		if err := partitionConsumer.Close(); err != nil {
-			log.Printf("Error closing partition consumer: %v", err)
+			log.Printf("[Error][Kafka] Failed closing partition consumer: %v", err)
 		}
 	}()
 
 	signals := make(chan os.Signal, 1)
 	signal.Notify(signals, os.Interrupt)
 
-	fmt.Println("Kafka server: listening on port 9092")
+	log.Print("[Kafka] Listening on port 9092")
+
 	for {
 		select {
 		case msg := <-partitionConsumer.Messages():
-			handler.ProcessStockTransaction(context.TODO(), msg.Value)
+			err := handler.ProcessStockTransaction(context.Background(), msg.Value)
+			if err != nil {
+				log.Printf("[Error][Kafka] Failed ProcessStockTransaction: %s", err.Error())
+			}
 		case err := <-partitionConsumer.Errors():
-			log.Printf("Error: %v", err)
+			log.Printf("[Error][Kafka] Failed consuming by partition consumer: %v", err)
 		case <-signals:
 			return
 		}

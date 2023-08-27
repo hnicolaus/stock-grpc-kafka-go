@@ -3,7 +3,6 @@ package handler
 import (
 	"context"
 	"errors"
-	"fmt"
 	"time"
 
 	"bibit.id/challenge/model"
@@ -15,25 +14,9 @@ const (
 )
 
 func (h *Handler) GetStockSummary(ctx context.Context, req *proto.GetStockSummaryRequest) (*proto.GetStockSummaryResponse, error) {
-	fmt.Printf("GRPC request: %v\n", req)
-
-	stockCode := req.GetStockCode()
-	if stockCode == "" {
-		return &proto.GetStockSummaryResponse{}, errors.New("stockCode cannot be empty")
-	}
-
-	dateString := req.GetDate()
-	if dateString == "" {
-		return &proto.GetStockSummaryResponse{}, errors.New("date cannot be empty")
-	}
-	date, err := time.Parse(stockSummaryDateFmt, dateString)
+	request, err := convertProtoToRequest(req)
 	if err != nil {
-		return &proto.GetStockSummaryResponse{}, errors.New("date format is invalid")
-	}
-
-	request := model.GetStockSummaryRequest{
-		StockCode: stockCode,
-		Date:      date,
+		return &proto.GetStockSummaryResponse{}, err
 	}
 
 	stockSummary, err := h.stockUsecase.GetStockSummary(ctx, request)
@@ -52,5 +35,26 @@ func (h *Handler) GetStockSummary(ctx context.Context, req *proto.GetStockSummar
 		Volume:    stockSummary.Volume,
 		Value:     stockSummary.Value,
 		Average:   stockSummary.Average,
+	}, nil
+}
+
+func convertProtoToRequest(req *proto.GetStockSummaryRequest) (model.GetStockSummaryRequest, error) {
+	stockCode := req.GetStockCode()
+	if stockCode == "" {
+		return model.GetStockSummaryRequest{}, errors.New("stockCode cannot be empty")
+	}
+
+	dateString := req.GetDate()
+	if dateString == "" {
+		return model.GetStockSummaryRequest{}, errors.New("date cannot be empty")
+	}
+	date, err := time.Parse(stockSummaryDateFmt, dateString)
+	if err != nil {
+		return model.GetStockSummaryRequest{}, errors.New("date format is invalid")
+	}
+
+	return model.GetStockSummaryRequest{
+		StockCode: stockCode,
+		Date:      date,
 	}, nil
 }
