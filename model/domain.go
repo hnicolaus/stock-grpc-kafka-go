@@ -39,8 +39,8 @@ type Summary struct {
 // Assumption: TypeA is only used to set Prev price when the Quantity is 0
 func (summary Summary) ApplyTransaction(transaction Transaction) (bool, Summary) {
 	var (
-		updatedSummary Summary = summary
-		isUpdated      bool    = false
+		updatedSummary = summary
+		isUpdated      bool
 	)
 
 	if updatedSummary == (Summary{}) {

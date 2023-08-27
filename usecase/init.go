@@ -7,7 +7,7 @@ import (
 )
 
 type StockRepo interface {
-	GetStockSummary(ctx context.Context, request model.GetStockSummaryRequest) (summary model.Summary, err error)
+	GetStockSummary(ctx context.Context, request model.GetStockSummaryRequest) (result []model.Summary, err error)
 	SetStockSummary(ctx context.Context, stockSummary model.Summary) (err error)
 }
 

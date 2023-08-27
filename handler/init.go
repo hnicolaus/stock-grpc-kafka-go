@@ -9,7 +9,7 @@ import (
 
 type StockUsecase interface {
 	UpdateStockSummary(ctx context.Context, transaction model.Transaction) error
-	GetStockSummary(ctx context.Context, request model.GetStockSummaryRequest) (model.Summary, error)
+	GetStockSummary(ctx context.Context, request model.GetStockSummaryRequest) ([]model.Summary, error)
 }
 
 type Handler struct {

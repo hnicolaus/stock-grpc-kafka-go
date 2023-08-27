@@ -97,5 +97,6 @@ func convertToType(t string) Type {
 
 type GetStockSummaryRequest struct {
 	StockCode string
-	Date      time.Time
+	FromDate  time.Time
+	ToDate    time.Time
 }

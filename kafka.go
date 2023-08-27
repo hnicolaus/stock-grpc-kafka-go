@@ -21,7 +21,7 @@ func serveKafka(handler *handler.Handler) {
 		log.Fatalf("[Error][Kafka] Failed creating consumer: %v", err)
 	}
 	defer func() {
-		if err := consumer.Close(); err != nil {
+		if err = consumer.Close(); err != nil {
 			log.Printf("[Error][Kafka] Failed closing consumer: %v", err)
 		}
 	}()
@@ -30,7 +30,7 @@ func serveKafka(handler *handler.Handler) {
 
 	partitionConsumer, err := consumer.ConsumePartition(topic, 0, sarama.OffsetNewest)
 	if err != nil {
-		log.Fatalf("[Error][Kafka] Failed creating partition consumer: %v", err)
+		log.Printf("[Error][Kafka] Failed creating partition consumer: %v", err)
 	}
 	defer func() {
 		if err := partitionConsumer.Close(); err != nil {

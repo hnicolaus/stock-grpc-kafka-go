@@ -12,18 +12,19 @@ import (
 )
 
 func (uc *Usecase) UpdateStockSummary(ctx context.Context, transaction model.Transaction) error {
-	var (
-		stockCode       = transaction.StockCode
-		transactionDate = transaction.Date
-	)
-
-	// Get stock summary by stockCode and date if alrady exists
-	summary, err := uc.stockRepo.GetStockSummary(ctx, model.GetStockSummaryRequest{
-		StockCode: stockCode,
-		Date:      transactionDate,
+	// Get stock summary by stockCode and date if already exists
+	summaryResult, err := uc.stockRepo.GetStockSummary(ctx, model.GetStockSummaryRequest{
+		StockCode: transaction.StockCode,
+		FromDate:  transaction.Date,
+		ToDate:    transaction.Date,
 	})
 	if err != nil {
 		return err
+	}
+
+	summary := model.Summary{}
+	if len(summaryResult) > 0 {
+		summary = summaryResult[0]
 	}
 
 	// Update stock summary data based on the transaction
@@ -40,6 +41,6 @@ func (uc *Usecase) UpdateStockSummary(ctx context.Context, transaction model.Tra
 	return nil
 }
 
-func (uc *Usecase) GetStockSummary(ctx context.Context, request model.GetStockSummaryRequest) (model.Summary, error) {
+func (uc *Usecase) GetStockSummary(ctx context.Context, request model.GetStockSummaryRequest) ([]model.Summary, error) {
 	return uc.stockRepo.GetStockSummary(ctx, request)
 }

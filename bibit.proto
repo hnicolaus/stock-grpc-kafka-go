@@ -10,10 +10,11 @@ service Bibit {
 
 message GetStockSummaryRequest {
     string stockCode = 1;
-    string date = 2;
+    string toDate = 2;
+    string fromDate = 3;
 }
 
-message GetStockSummaryResponse {
+message StockSummary {
     string stock_code = 1;
     string date = 2;
     int64 prev = 3;
@@ -24,4 +25,8 @@ message GetStockSummaryResponse {
     int64 volume = 8;
     int64 value = 9;
     int64 average = 10;
+}
+
+message GetStockSummaryResponse {
+    repeated StockSummary result = 1;
 }
