@@ -42,7 +42,7 @@ func (repo *Repo) GetStockSummary(ctx context.Context, request model.GetStockSum
 	return result, nil
 }
 
-func (repo *Repo) SetStockSummary(ctx context.Context, summary model.Summary) error {
+func (repo *Repo) UpdateStockSummary(ctx context.Context, summary model.Summary) error {
 	key := fmt.Sprintf(stockSummaryFmt, summary.StockCode)
 	dateUnix := summary.Date.Unix()
 

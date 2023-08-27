@@ -19,16 +19,9 @@ type Input struct {
 }
 
 func (i *Input) ToTransaction() (Transaction, error) {
-	var (
-		inputType                 Type
-		inputPrice, inputQuantity int64
-
-		err error
-	)
-
-	inputType = convertToType(i.Type)
+	inputType := convertToType(i.Type)
 	if inputType == TypeUndefined {
-		return Transaction{}, fmt.Errorf("invalid type: %s", i.Type)
+		return Transaction{}, fmt.Errorf("invalid transaction type %s", i.Type)
 	}
 
 	price := i.Price
@@ -41,11 +34,12 @@ func (i *Input) ToTransaction() (Transaction, error) {
 		quantity = i.ExecutedQuantity
 	}
 
-	inputPrice, err = strconv.ParseInt(price, 10, 64)
+	inputPrice, err := strconv.ParseInt(price, 10, 64)
 	if err != nil {
 		return Transaction{}, err
 	}
 
+	inputQuantity := int64(0)
 	if quantity != "" {
 		inputQuantity, err = strconv.ParseInt(quantity, 10, 64)
 		if err != nil {

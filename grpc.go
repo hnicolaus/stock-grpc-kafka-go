@@ -18,7 +18,7 @@ func serveGRPC(grpcHandler *handler.Handler) {
 	grpcServer := grpc.NewServer()
 	proto.RegisterBibitServer(grpcServer, grpcHandler)
 
-	log.Print("[GRPC] Listening on port 50051")
+	log.Print("[GRPC] Serving on port 50051")
 	if err := grpcServer.Serve(listen); err != nil {
 		log.Fatalf("[GRPC] Failed to serve GRPC server: %v", err)
 	}

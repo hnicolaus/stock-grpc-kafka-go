@@ -7,53 +7,46 @@ import (
 	"os/signal"
 
 	"bibit.id/challenge/handler"
+	"bibit.id/challenge/model"
 	"github.com/IBM/sarama"
 )
 
 func serveKafka(handler *handler.Handler) {
 	config := sarama.NewConfig()
-	config.Consumer.Return.Errors = true
+	config.Consumer.Group.Rebalance.Strategy = sarama.NewBalanceStrategyRange()
+	config.Consumer.Offsets.Initial = sarama.OffsetNewest
+	config.Version = sarama.DefaultVersion
 
 	brokers := []string{"localhost:9092"}
+	groupID := "bibit_consumer_group"
 
-	consumer, err := sarama.NewConsumer(brokers, config)
+	consumerGroup, err := sarama.NewConsumerGroup(brokers, groupID, config)
 	if err != nil {
-		log.Fatalf("[Error][Kafka] Failed creating consumer: %v", err)
+		log.Fatalf("[Error][Kafka] Failed creating consumer group: %v", err)
 	}
 	defer func() {
-		if err = consumer.Close(); err != nil {
-			log.Printf("[Error][Kafka] Failed closing consumer: %v", err)
+		if err = consumerGroup.Close(); err != nil {
+			log.Printf("[Error][Kafka] Failed closing consumer group: %v", err)
 		}
 	}()
 
-	topic := "bibit_challenge_1"
+	topics := []string{"bibit_challenge_1"}
 
-	partitionConsumer, err := consumer.ConsumePartition(topic, 0, sarama.OffsetNewest)
-	if err != nil {
-		log.Printf("[Error][Kafka] Failed creating partition consumer: %v", err)
-	}
-	defer func() {
-		if err := partitionConsumer.Close(); err != nil {
-			log.Printf("[Error][Kafka] Failed closing partition consumer: %v", err)
-		}
-	}()
+	consumer := &model.Consumer{Handler: handler.ProcessStockTransaction}
 
 	signals := make(chan os.Signal, 1)
 	signal.Notify(signals, os.Interrupt)
 
-	log.Print("[Kafka] Listening on port 9092")
-
+	log.Print("[Kafka] Serving on port 9092")
 	for {
+		if err := consumerGroup.Consume(context.Background(), topics, consumer); err != nil {
+			log.Printf("[Error][Kafka] Error from consumer: %v", err)
+		}
+
 		select {
-		case msg := <-partitionConsumer.Messages():
-			err := handler.ProcessStockTransaction(context.Background(), msg.Value)
-			if err != nil {
-				log.Printf("[Error][Kafka] Failed ProcessStockTransaction: %s", err.Error())
-			}
-		case err := <-partitionConsumer.Errors():
-			log.Printf("[Error][Kafka] Failed consuming by partition consumer: %v", err)
 		case <-signals:
 			return
+		default:
 		}
 	}
 }

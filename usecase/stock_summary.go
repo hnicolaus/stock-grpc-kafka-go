@@ -32,7 +32,7 @@ func (uc *Usecase) UpdateStockSummary(ctx context.Context, transaction model.Tra
 
 	if isUpdated {
 		// Persist updated stock summary to our data store
-		err = uc.stockRepo.SetStockSummary(ctx, updatedSummary)
+		err = uc.stockRepo.UpdateStockSummary(ctx, updatedSummary)
 		if err != nil {
 			return err
 		}
