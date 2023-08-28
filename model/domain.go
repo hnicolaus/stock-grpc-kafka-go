@@ -9,20 +9,20 @@ import (
 	"time"
 )
 
-type Type string
+type TransactionType string
 
 const (
-	TypeA         Type = "A"
-	TypeP         Type = "P"
-	TypeE         Type = "E"
-	TypeUndefined Type = ""
+	TransactionTypeA         TransactionType = "A"
+	TransactionTypeP         TransactionType = "P"
+	TransactionTypeE         TransactionType = "E"
+	TransactionTypeUndefined TransactionType = ""
 )
 
 type Transaction struct {
 	Price     int64
 	Quantity  int64
 	StockCode string
-	Type      Type
+	Type      TransactionType
 	Date      time.Time // Only contains date; we assume Transactions come in chronological order
 }
 
@@ -54,11 +54,11 @@ func (summary Summary) ApplyTransaction(transaction Transaction) (bool, Summary)
 	}
 
 	switch transaction.Type {
-	case TypeA:
+	case TransactionTypeA:
 		if transaction.Quantity == 0 {
 			updatedSummary.Prev = transaction.Price
 		}
-	case TypeE, TypeP:
+	case TransactionTypeE, TransactionTypeP:
 		updatedSummary.Value = summary.Value + (transaction.Quantity * transaction.Price)
 		updatedSummary.Volume = summary.Volume + transaction.Quantity
 		updatedSummary.Average = (updatedSummary.Value / updatedSummary.Volume)

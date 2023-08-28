@@ -25,7 +25,7 @@ type Input struct {
 
 func (i *Input) ToTransaction() (Transaction, error) {
 	inputType := convertToType(i.Type)
-	if inputType == TypeUndefined {
+	if inputType == TransactionTypeUndefined {
 		return Transaction{}, fmt.Errorf("invalid transaction type %s", i.Type)
 	}
 
@@ -81,16 +81,16 @@ func getDateFromOrderNumber(orderNumber string) (time.Time, error) {
 	return timestamp, nil
 }
 
-func convertToType(t string) Type {
+func convertToType(t string) TransactionType {
 	switch t {
 	case "A":
-		return TypeA
+		return TransactionTypeA
 	case "P":
-		return TypeP
+		return TransactionTypeP
 	case "E":
-		return TypeE
+		return TransactionTypeE
 	default:
-		return TypeUndefined
+		return TransactionTypeUndefined
 	}
 }
 

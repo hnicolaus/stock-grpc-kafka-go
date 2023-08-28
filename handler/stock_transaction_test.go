@@ -48,7 +48,7 @@ func Test_ProcessStockTransaction(t *testing.T) {
 						StockCode: "BBCA",
 						Price:     8200,
 						Quantity:  100,
-						Type:      model.TypeA,
+						Type:      model.TransactionTypeA,
 						Date:      time.Time{}.AddDate(0, 0, 1),
 					}).Return(nil)
 
@@ -75,7 +75,7 @@ func Test_ProcessStockTransaction(t *testing.T) {
 						StockCode: "BBCA",
 						Price:     8200,
 						Quantity:  100,
-						Type:      model.TypeA,
+						Type:      model.TransactionTypeA,
 						Date:      time.Time{}.AddDate(0, 0, 1),
 					}).Return(nil)
 
@@ -102,7 +102,7 @@ func Test_ProcessStockTransaction(t *testing.T) {
 						StockCode: "BBCA",
 						Price:     8200,
 						Quantity:  100,
-						Type:      model.TypeA,
+						Type:      model.TransactionTypeA,
 						Date:      time.Time{}.AddDate(0, 0, 1),
 					}).Return(errors.New("error-update-stock-summary"))
 
