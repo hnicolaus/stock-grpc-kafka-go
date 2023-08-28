@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"os"
 	"os/signal"
@@ -11,14 +12,15 @@ import (
 	"github.com/IBM/sarama"
 )
 
-func serveKafka(handler *handler.Handler) {
+func serveKafka(cfg model.Config, handler *handler.Handler) {
 	config := sarama.NewConfig()
 	config.Consumer.Group.Rebalance.Strategy = sarama.NewBalanceStrategyRange()
 	config.Consumer.Offsets.Initial = sarama.OffsetNewest
 	config.Version = sarama.DefaultVersion
 
-	brokers := []string{"localhost:9092"}
-	groupID := "bibit_consumer_group"
+	broker := fmt.Sprintf("%s%s", cfg.Kafka.Host, cfg.Kafka.Port)
+	brokers := []string{broker}
+	groupID := cfg.Kafka.GroupID
 
 	consumerGroup, err := sarama.NewConsumerGroup(brokers, groupID, config)
 	if err != nil {
@@ -30,14 +32,14 @@ func serveKafka(handler *handler.Handler) {
 		}
 	}()
 
-	topics := []string{"bibit_challenge_1"}
+	topics := []string{cfg.Kafka.Topic}
 
 	consumer := &model.Consumer{Handler: handler.ProcessStockTransaction}
 
 	signals := make(chan os.Signal, 1)
 	signal.Notify(signals, os.Interrupt)
 
-	log.Print("[Kafka] Serving on port 9092")
+	log.Printf("[Kafka] Serving on port %s", cfg.Kafka.Port)
 	for {
 		if err := consumerGroup.Consume(context.Background(), topics, consumer); err != nil {
 			log.Printf("[Error][Kafka] Error from consumer: %v", err)

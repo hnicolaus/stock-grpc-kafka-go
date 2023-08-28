@@ -5,20 +5,21 @@ import (
 	"net"
 
 	"bibit.id/challenge/handler"
+	"bibit.id/challenge/model"
 	"bibit.id/challenge/proto"
 	"google.golang.org/grpc"
 )
 
-func serveGRPC(grpcHandler *handler.Handler) {
-	listen, err := net.Listen("tcp", ":50051")
+func serveGRPC(cfg model.Config, grpcHandler *handler.Handler) {
+	listen, err := net.Listen(cfg.GRPC.Network, cfg.GRPC.Port)
 	if err != nil {
-		log.Printf("[GRPC] Failed to listen to port 50051: %v", err)
+		log.Printf("[GRPC] Failed to listen to port %s: %v", cfg.GRPC.Port, err)
 	}
 
 	grpcServer := grpc.NewServer()
 	proto.RegisterBibitServer(grpcServer, grpcHandler)
 
-	log.Print("[GRPC] Serving on port 50051")
+	log.Printf("[GRPC] Serving on port %v", cfg.GRPC.Port)
 	if err := grpcServer.Serve(listen); err != nil {
 		log.Fatalf("[GRPC] Failed to serve GRPC server: %v", err)
 	}

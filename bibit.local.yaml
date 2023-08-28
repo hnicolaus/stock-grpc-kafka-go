@@ -1,0 +1,8 @@
+grpc:
+  network: "tcp"
+  port: ":50051"
+kafka_consumer:
+  host: localhost
+  port: ":9092"
+  group_id: "bibit_consumer_group"
+  topic: "bibit_challenge_1"
