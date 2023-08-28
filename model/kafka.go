@@ -9,20 +9,22 @@ type Consumer struct {
 }
 
 func (consumer *Consumer) Setup(sarama.ConsumerGroupSession) error {
+	_ = consumer
 	return nil
 }
 
-func (h *Consumer) Cleanup(sarama.ConsumerGroupSession) error {
+func (consumer *Consumer) Cleanup(sarama.ConsumerGroupSession) error {
+	_ = consumer
 	return nil
 }
 
-func (h *Consumer) ConsumeClaim(session sarama.ConsumerGroupSession, claim sarama.ConsumerGroupClaim) error {
+func (consumer *Consumer) ConsumeClaim(session sarama.ConsumerGroupSession, claim sarama.ConsumerGroupClaim) error {
 	for message := range claim.Messages() {
 		if message == nil {
 			return nil
 		}
 
-		h.Handler(message.Value)
+		_ = consumer.Handler(message.Value)
 
 		session.MarkMessage(message, "")
 	}

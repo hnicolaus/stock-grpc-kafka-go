@@ -34,19 +34,20 @@ func main() {
 }
 
 func getConfig() model.Config {
+	var file *os.File
+
 	cfg, err := func() (model.Config, error) {
 		currentDir, err := os.Getwd()
 		if err != nil {
 			return model.Config{}, err
 		}
 
-		filepath := filepath.Join(currentDir, fileName)
+		path := filepath.Join(currentDir, fileName)
 
-		file, err := os.Open(filepath)
+		file, err = os.Open(filepath.Clean(path))
 		if err != nil {
 			return model.Config{}, err
 		}
-		defer file.Close()
 
 		var cfg model.Config
 		if err := yaml.NewDecoder(file).Decode(&cfg); err != nil {
@@ -60,5 +61,6 @@ func getConfig() model.Config {
 		return model.DefaultConfigLocal
 	}
 
+	_ = file.Close()
 	return cfg
 }

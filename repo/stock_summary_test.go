@@ -15,6 +15,10 @@ import (
 	"github.com/golang/mock/gomock"
 )
 
+const (
+	expectedKey = "stocksummary-BBCA"
+)
+
 func Test_Repo_GetStockSummary(t *testing.T) {
 	type args struct {
 		ctx   context.Context
@@ -78,7 +82,7 @@ func Test_Repo_GetStockSummary(t *testing.T) {
 
 					expectedResult := []string{string(expectedSummaryOneJSON), string(expectedSummaryTwoJSON)}
 
-					m.EXPECT().ZRangeByScore(gomock.Any(), "stocksummary-BBCA", &redis.ZRangeBy{
+					m.EXPECT().ZRangeByScore(gomock.Any(), expectedKey, &redis.ZRangeBy{
 						Min: strconv.Itoa(int(fromDate.Unix())),
 						Max: strconv.Itoa(int(toDate.Unix())),
 					}).Return(redis.NewStringSliceResult(expectedResult, nil))
@@ -130,7 +134,7 @@ func Test_Repo_GetStockSummary(t *testing.T) {
 					fromDate := time.Time{}.AddDate(0, 0, 1)
 					toDate := time.Time{}.AddDate(0, 0, 2)
 
-					m.EXPECT().ZRangeByScore(gomock.Any(), "stocksummary-BBCA", &redis.ZRangeBy{
+					m.EXPECT().ZRangeByScore(gomock.Any(), expectedKey, &redis.ZRangeBy{
 						Min: strconv.Itoa(int(fromDate.Unix())),
 						Max: strconv.Itoa(int(toDate.Unix())),
 					}).Return(redis.NewStringSliceResult([]string{}, errors.New("error-redis")))
@@ -199,7 +203,6 @@ func Test_Repo_UpdateStockSummary(t *testing.T) {
 				redisClient: func(ctrl *gomock.Controller) RedisClient {
 					m := mock.NewMockRedisClient(ctrl)
 
-					expectedKey := "stocksummary-BBCA"
 					expectedDate := time.Time{}.AddDate(0, 0, 1)
 
 					expectedExistingSummary := model.Summary{
@@ -271,7 +274,6 @@ func Test_Repo_UpdateStockSummary(t *testing.T) {
 				redisClient: func(ctrl *gomock.Controller) RedisClient {
 					m := mock.NewMockRedisClient(ctrl)
 
-					expectedKey := "stocksummary-BBCA"
 					expectedDate := time.Time{}.AddDate(0, 0, 1)
 
 					m.EXPECT().ZRangeByScore(gomock.Any(), expectedKey, &redis.ZRangeBy{
@@ -326,7 +328,6 @@ func Test_Repo_UpdateStockSummary(t *testing.T) {
 				redisClient: func(ctrl *gomock.Controller) RedisClient {
 					m := mock.NewMockRedisClient(ctrl)
 
-					expectedKey := "stocksummary-BBCA"
 					expectedDate := time.Time{}.AddDate(0, 0, 1)
 
 					m.EXPECT().ZRangeByScore(gomock.Any(), expectedKey, &redis.ZRangeBy{
@@ -360,7 +361,6 @@ func Test_Repo_UpdateStockSummary(t *testing.T) {
 				redisClient: func(ctrl *gomock.Controller) RedisClient {
 					m := mock.NewMockRedisClient(ctrl)
 
-					expectedKey := "stocksummary-BBCA"
 					expectedDate := time.Time{}.AddDate(0, 0, 1)
 
 					expectedExistingSummary := model.Summary{
@@ -411,7 +411,6 @@ func Test_Repo_UpdateStockSummary(t *testing.T) {
 				redisClient: func(ctrl *gomock.Controller) RedisClient {
 					m := mock.NewMockRedisClient(ctrl)
 
-					expectedKey := "stocksummary-BBCA"
 					expectedDate := time.Time{}.AddDate(0, 0, 1)
 
 					expectedExistingSummary := model.Summary{
