@@ -7,6 +7,7 @@ import (
 	"github.com/go-redis/redis/v8"
 )
 
+//go:generate mockgen -source=./init.go -destination=./_mock/stock_summary_mock.go -package=mock
 type RedisClient interface {
 	ZRangeByScore(ctx context.Context, key string, opt *redis.ZRangeBy) *redis.StringSliceCmd
 	ZRem(ctx context.Context, key string, members ...interface{}) *redis.IntCmd
@@ -14,7 +15,7 @@ type RedisClient interface {
 }
 
 type Repo struct {
-	redisClient *redis.Client
+	redisClient RedisClient
 }
 
 func New() *Repo {

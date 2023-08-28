@@ -55,7 +55,7 @@ func (repo *Repo) UpdateStockSummary(ctx context.Context, summary model.Summary)
 	}
 
 	if len(existingSummary) > 0 {
-		_, err = repo.redisClient.ZRem(ctx, key, existingSummary).Result()
+		err = repo.redisClient.ZRem(ctx, key, existingSummary).Err()
 		if err != nil {
 			return err
 		}
@@ -66,8 +66,17 @@ func (repo *Repo) UpdateStockSummary(ctx context.Context, summary model.Summary)
 		return err
 	}
 
-	return repo.redisClient.ZAdd(ctx, key, &redis.Z{
+	err = repo.redisClient.ZAdd(ctx, key, &redis.Z{
 		Score:  float64(dateUnix),
 		Member: value,
 	}).Err()
+	if err != nil && len(existingSummary) > 0 {
+		// Attempt to "recover" (re-add) the previously removed summary
+		repo.redisClient.ZAdd(ctx, key, &redis.Z{
+			Score:  float64(dateUnix),
+			Member: []byte(existingSummary[0]),
+		})
+	}
+
+	return err
 }
