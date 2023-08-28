@@ -7,6 +7,7 @@ import (
 	"bibit.id/challenge/proto"
 )
 
+//go:generate mockgen -source=./init.go -destination=./_mock/stock_summary_mock.go -package=mock
 type StockUsecase interface {
 	UpdateStockSummary(ctx context.Context, transaction model.Transaction) error
 	GetStockSummary(ctx context.Context, request model.GetStockSummaryRequest) ([]model.Summary, error)

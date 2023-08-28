@@ -24,6 +24,7 @@ func (h *Handler) ProcessStockTransaction(data []byte) error {
 	err = h.stockUsecase.UpdateStockSummary(context.Background(), transaction)
 	if err != nil {
 		log.Printf("[Error][UpdateStockSummary] %v", err)
+		return err
 	}
 
 	return nil
