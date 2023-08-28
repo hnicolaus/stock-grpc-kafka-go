@@ -1,3 +1,8 @@
+/*
+	Hans Nicolaus
+	29 Aug 2023
+*/
+
 package repo
 
 import (
@@ -14,6 +19,13 @@ const (
 	stockSummaryFmt = "stocksummary-%s"
 )
 
+// GetStockSummary gets stock summary data for stockCode for the requested date range by performing ZRangeByScore:
+// - Key: stockCode
+// - Min score: unix value of the requested fromDate
+// - Max score: unix value of the requested toDate
+// Using ZRangeByScore allows users to retrieve the a stock's summary data over a period of time.
+// To get a stock's summary for a single date, specify the same fromDate (inclusive) and toDate (inclusive).
+// To get a stock's summary over a period of time, specify a fromDate value that is less than toDate.
 func (repo *Repo) GetStockSummary(ctx context.Context, request model.GetStockSummaryRequest) (result []model.Summary, err error) {
 	key := fmt.Sprintf(stockSummaryFmt, request.StockCode)
 
@@ -42,6 +54,11 @@ func (repo *Repo) GetStockSummary(ctx context.Context, request model.GetStockSum
 	return result, nil
 }
 
+// UpdateStockSummary upserts stock summary data for a stockCode on a given date by performing the following Redis operations:
+// 1. ZRangeByScore to check existing stock summary for stockCode (key) on a given date (same min & max score). Score is unix value of the summary date.
+// 2. ZRem to remove any data being returned by ZRangeByScore.
+// 3. ZADd to store the stock summary for stockCode (key) for the given date (score).
+// This ensures a stockCode to have exactly 1 stock summary per date (score).
 func (repo *Repo) UpdateStockSummary(ctx context.Context, summary model.Summary) error {
 	key := fmt.Sprintf(stockSummaryFmt, summary.StockCode)
 	dateUnix := summary.Date.Unix()

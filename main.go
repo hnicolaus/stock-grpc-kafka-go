@@ -1,3 +1,8 @@
+/*
+	Hans Nicolaus
+	29 Aug 2023
+*/
+
 package main
 
 import (
