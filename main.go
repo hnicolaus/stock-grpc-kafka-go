@@ -8,6 +8,7 @@ import (
 	"bibit.id/challenge/handler"
 	"bibit.id/challenge/model"
 	"bibit.id/challenge/repo"
+	"bibit.id/challenge/server"
 	"bibit.id/challenge/usecase"
 	"gopkg.in/yaml.v2"
 )
@@ -26,8 +27,8 @@ func main() {
 
 	cfg := getConfig()
 
-	go serveGRPC(cfg, stockHandler)
-	go serveKafka(cfg, stockHandler)
+	go server.ServeGRPC(cfg, stockHandler)
+	go server.ServeKafka(cfg, stockHandler)
 
 	<-signals
 }

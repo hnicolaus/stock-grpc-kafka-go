@@ -1,4 +1,4 @@
-package main
+package server
 
 import (
 	"log"
@@ -10,7 +10,7 @@ import (
 	"google.golang.org/grpc"
 )
 
-func serveGRPC(cfg model.Config, grpcHandler *handler.Handler) {
+func ServeGRPC(cfg model.Config, grpcHandler *handler.Handler) {
 	listen, err := net.Listen(cfg.GRPC.Network, cfg.GRPC.Port)
 	if err != nil {
 		log.Printf("[GRPC] Failed to listen to port %s: %v", cfg.GRPC.Port, err)

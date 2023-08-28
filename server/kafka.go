@@ -1,4 +1,4 @@
-package main
+package server
 
 import (
 	"context"
@@ -12,7 +12,7 @@ import (
 	"github.com/IBM/sarama"
 )
 
-func serveKafka(cfg model.Config, handler *handler.Handler) {
+func ServeKafka(cfg model.Config, handler *handler.Handler) {
 	config := sarama.NewConfig()
 	config.Consumer.Group.Rebalance.Strategy = sarama.NewBalanceStrategyRange()
 	config.Consumer.Offsets.Initial = sarama.OffsetNewest
