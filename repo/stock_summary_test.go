@@ -230,7 +230,8 @@ func Test_Repo_UpdateStockSummary(t *testing.T) {
 						Max: strconv.Itoa(int(expectedDate.Unix())),
 					}).Return(redis.NewStringSliceResult(expectedExistingSummaryList, nil))
 
-					m.EXPECT().ZRem(gomock.Any(), expectedKey, expectedExistingSummaryList).Return(redis.NewIntCmd(context.Background(), int64(1), nil))
+					m.EXPECT().ZRemRangeByScore(gomock.Any(), expectedKey, strconv.Itoa(int(expectedDate.Unix())), strconv.Itoa(int(expectedDate.Unix()))).
+						Return(redis.NewIntCmd(context.Background(), int64(1), nil))
 
 					expectedNewSummary := model.Summary{
 						StockCode: "BBCA",
@@ -346,7 +347,7 @@ func Test_Repo_UpdateStockSummary(t *testing.T) {
 			wantErr: true,
 		},
 		{
-			name: "error-zrem",
+			name: "error-zremrangebyscore",
 			args: args{
 				ctx: context.Background(),
 				input: model.Summary{
@@ -388,7 +389,7 @@ func Test_Repo_UpdateStockSummary(t *testing.T) {
 						Max: strconv.Itoa(int(expectedDate.Unix())),
 					}).Return(redis.NewStringSliceResult(expectedExistingSummaryList, nil))
 
-					m.EXPECT().ZRem(gomock.Any(), expectedKey, expectedExistingSummaryList).Return(redis.NewIntResult(int64(0), errors.New("error-zrem")))
+					m.EXPECT().ZRemRangeByScore(gomock.Any(), expectedKey, strconv.Itoa(int(expectedDate.Unix())), strconv.Itoa(int(expectedDate.Unix()))).Return(redis.NewIntResult(int64(0), errors.New("error-zrem")))
 
 					return m
 				},
@@ -438,7 +439,7 @@ func Test_Repo_UpdateStockSummary(t *testing.T) {
 						Max: strconv.Itoa(int(expectedDate.Unix())),
 					}).Return(redis.NewStringSliceResult(expectedExistingSummaryList, nil))
 
-					m.EXPECT().ZRem(gomock.Any(), expectedKey, expectedExistingSummaryList).Return(redis.NewIntCmd(context.Background(), int64(1), nil))
+					m.EXPECT().ZRemRangeByScore(gomock.Any(), expectedKey, strconv.Itoa(int(expectedDate.Unix())), strconv.Itoa(int(expectedDate.Unix()))).Return(redis.NewIntCmd(context.Background(), int64(1), nil))
 
 					expectedNewSummary := model.Summary{
 						StockCode: "BBCA",

@@ -61,18 +61,21 @@ func (repo *Repo) GetStockSummary(ctx context.Context, request model.GetStockSum
 // This ensures a stockCode to have exactly 1 stock summary per date (score).
 func (repo *Repo) UpdateStockSummary(ctx context.Context, summary model.Summary) error {
 	key := fmt.Sprintf(stockSummaryFmt, summary.StockCode)
+
 	dateUnix := summary.Date.Unix()
+	zRangeMin := strconv.Itoa(int(dateUnix))
+	zRangeMax := zRangeMin
 
 	existingSummary, err := repo.redisClient.ZRangeByScore(ctx, key, &redis.ZRangeBy{
-		Min: strconv.Itoa(int(dateUnix)),
-		Max: strconv.Itoa(int(dateUnix)),
+		Min: zRangeMin,
+		Max: zRangeMax,
 	}).Result()
 	if err != nil {
 		return err
 	}
 
 	if len(existingSummary) > 0 {
-		err = repo.redisClient.ZRem(ctx, key, existingSummary).Err()
+		err = repo.redisClient.ZRemRangeByScore(ctx, key, zRangeMin, zRangeMax).Err()
 		if err != nil {
 			return err
 		}

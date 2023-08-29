@@ -18,7 +18,7 @@ import (
 	"github.com/golang/mock/gomock"
 )
 
-func Test_GetStockSummary(t *testing.T) {
+func Test_Handler_GetStockSummary(t *testing.T) {
 	type args struct {
 		ctx   context.Context
 		input *proto.GetStockSummaryRequest

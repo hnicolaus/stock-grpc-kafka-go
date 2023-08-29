@@ -15,7 +15,7 @@ import (
 	"github.com/golang/mock/gomock"
 )
 
-func Test_ProcessStockTransaction(t *testing.T) {
+func Test_Handler_ProcessStockTransaction(t *testing.T) {
 	type args struct {
 		data []byte
 	}

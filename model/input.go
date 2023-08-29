@@ -73,7 +73,7 @@ func getDateFromOrderNumber(orderNumber string) (time.Time, error) {
 		orderNumber = orderNumber[:len(timeFormat)]
 	}
 
-	timestamp, err := time.Parse(timeFormat, orderNumber) // Assuming the format is "yyyyMMdd"
+	timestamp, err := time.Parse(timeFormat, orderNumber) // assume order number contains date in the "yyyyMMdd" format
 	if err != nil {
 		return time.Time{}, err
 	}

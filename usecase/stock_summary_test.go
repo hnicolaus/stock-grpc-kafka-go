@@ -17,7 +17,7 @@ import (
 	"github.com/golang/mock/gomock"
 )
 
-func Test_GetStockSummary(t *testing.T) {
+func Test_Usecase_GetStockSummary(t *testing.T) {
 	type args struct {
 		ctx   context.Context
 		input model.GetStockSummaryRequest
@@ -157,7 +157,7 @@ func Test_GetStockSummary(t *testing.T) {
 	}
 }
 
-func Test_UpdateStockSummary(t *testing.T) {
+func Test_Usecase_UpdateStockSummary(t *testing.T) {
 	type args struct {
 		ctx   context.Context
 		input model.Transaction

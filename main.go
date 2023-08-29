@@ -23,14 +23,14 @@ const (
 )
 
 func main() {
-	stockRepo := repo.New()
+	cfg := getConfig()
+
+	stockRepo := repo.New(cfg)
 	stockUsecase := usecase.New(stockRepo)
 	stockHandler := handler.New(stockUsecase)
 
 	signals := make(chan os.Signal, 1)
 	signal.Notify(signals, os.Interrupt)
-
-	cfg := getConfig()
 
 	go server.ServeGRPC(cfg, stockHandler)
 	go server.ServeKafka(cfg, stockHandler)

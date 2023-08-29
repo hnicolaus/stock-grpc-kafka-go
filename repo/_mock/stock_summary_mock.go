@@ -68,21 +68,16 @@ func (mr *MockRedisClientMockRecorder) ZRangeByScore(ctx, key, opt interface{}) 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ZRangeByScore", reflect.TypeOf((*MockRedisClient)(nil).ZRangeByScore), ctx, key, opt)
 }
 
-// ZRem mocks base method.
-func (m *MockRedisClient) ZRem(ctx context.Context, key string, members ...interface{}) *redis.IntCmd {
+// ZRemRangeByScore mocks base method.
+func (m *MockRedisClient) ZRemRangeByScore(ctx context.Context, key, min, max string) *redis.IntCmd {
 	m.ctrl.T.Helper()
-	varargs := []interface{}{ctx, key}
-	for _, a := range members {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "ZRem", varargs...)
+	ret := m.ctrl.Call(m, "ZRemRangeByScore", ctx, key, min, max)
 	ret0, _ := ret[0].(*redis.IntCmd)
 	return ret0
 }
 
-// ZRem indicates an expected call of ZRem.
-func (mr *MockRedisClientMockRecorder) ZRem(ctx, key interface{}, members ...interface{}) *gomock.Call {
+// ZRemRangeByScore indicates an expected call of ZRemRangeByScore.
+func (mr *MockRedisClientMockRecorder) ZRemRangeByScore(ctx, key, min, max interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{ctx, key}, members...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ZRem", reflect.TypeOf((*MockRedisClient)(nil).ZRem), varargs...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ZRemRangeByScore", reflect.TypeOf((*MockRedisClient)(nil).ZRemRangeByScore), ctx, key, min, max)
 }
