@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-type Input struct {
+type KafkaTransaction struct {
 	Type             string `json:"type"`
 	OrderBook        string `json:"order_book,omitempty"`
 	OrderNumber      string `json:"order_number,omitempty"`
@@ -23,7 +23,7 @@ type Input struct {
 	ExecutionPrice   string `json:"execution_price,omitempty"`
 }
 
-func (i *Input) ToTransaction() (Transaction, error) {
+func (i *KafkaTransaction) ToTransaction() (Transaction, error) {
 	inputType := convertToType(i.Type)
 	if inputType == TransactionTypeUndefined {
 		return Transaction{}, fmt.Errorf("invalid transaction type %s", i.Type)

@@ -14,7 +14,7 @@ import (
 )
 
 func (h *Handler) ProcessStockTransaction(data []byte) error {
-	input := model.Input{}
+	input := model.KafkaTransaction{}
 	if err := json.Unmarshal(data, &input); err != nil {
 		log.Printf("[Error][ProcessStockTransaction] error unmarshaling Transaction event: %v", err)
 		return err
