@@ -10,8 +10,8 @@ import (
 	"errors"
 	"time"
 
-	"bibit.id/challenge/model"
-	"bibit.id/challenge/proto"
+	"stock/model"
+	"stock/proto"
 )
 
 const (

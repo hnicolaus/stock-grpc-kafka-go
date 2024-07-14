@@ -9,9 +9,10 @@ import (
 	"log"
 	"net"
 
-	"bibit.id/challenge/handler"
-	"bibit.id/challenge/model"
-	"bibit.id/challenge/proto"
+	"stock/handler"
+	"stock/model"
+	"stock/proto"
+
 	"google.golang.org/grpc"
 )
 
@@ -22,7 +23,7 @@ func ServeGRPC(cfg model.Config, grpcHandler *handler.Handler) {
 	}
 
 	grpcServer := grpc.NewServer()
-	proto.RegisterBibitServer(grpcServer, grpcHandler)
+	proto.RegisterStockServer(grpcServer, grpcHandler)
 
 	log.Printf("[GRPC] Serving on port %v", cfg.GRPC.Port)
 	if err := grpcServer.Serve(listen); err != nil {

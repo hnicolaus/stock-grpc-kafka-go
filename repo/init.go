@@ -10,7 +10,8 @@ import (
 	"fmt"
 	"log"
 
-	"bibit.id/challenge/model"
+	"stock/model"
+
 	"github.com/go-redis/redis/v8"
 )
 

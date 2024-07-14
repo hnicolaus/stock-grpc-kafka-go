@@ -39,8 +39,8 @@ var (
 		Kafka: KafkaConsumer{
 			Host:    "localhost",
 			Port:    ":9092",
-			GroupID: "bibit_consumer_group",
-			Topic:   "bibit_challenge_1",
+			GroupID: "stock_consumer_group",
+			Topic:   "stock",
 		},
 		Redis: Redis{
 			Host:     "localhost",

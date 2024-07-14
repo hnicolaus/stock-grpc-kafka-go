@@ -14,8 +14,9 @@ import (
 	"testing"
 	"time"
 
-	"bibit.id/challenge/model"
-	mock "bibit.id/challenge/repo/_mock"
+	"stock/model"
+	mock "stock/repo/_mock"
+
 	"github.com/go-redis/redis/v8"
 	"github.com/golang/mock/gomock"
 )

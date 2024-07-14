@@ -8,8 +8,8 @@ package handler
 import (
 	"context"
 
-	"bibit.id/challenge/model"
-	"bibit.id/challenge/proto"
+	"stock/model"
+	"stock/proto"
 )
 
 //go:generate mockgen -source=./init.go -destination=./_mock/stock_summary_mock.go -package=mock
@@ -19,7 +19,7 @@ type StockUsecase interface {
 }
 
 type Handler struct {
-	proto.UnimplementedBibitServer
+	proto.UnimplementedStockServer
 	stockUsecase StockUsecase
 }
 

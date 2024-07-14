@@ -4,8 +4,8 @@ grpc:
 kafka_consumer:
   host: "localhost"
   port: ":9092"
-  group_id: "bibit_consumer_group"
-  topic: "bibit_challenge_1"
+  group_id: "stock_consumer_group"
+  topic: "stock"
 redis:
   host: "localhost"
   port: ":6379"

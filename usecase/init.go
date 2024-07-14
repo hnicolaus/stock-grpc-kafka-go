@@ -8,7 +8,7 @@ package usecase
 import (
 	"context"
 
-	"bibit.id/challenge/model"
+	"stock/model"
 )
 
 //go:generate mockgen -source=./init.go -destination=./_mock/stock_summary_mock.go -package=mock

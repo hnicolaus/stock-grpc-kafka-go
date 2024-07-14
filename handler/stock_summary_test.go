@@ -12,9 +12,10 @@ import (
 	"testing"
 	"time"
 
-	mock "bibit.id/challenge/handler/_mock"
-	"bibit.id/challenge/model"
-	"bibit.id/challenge/proto"
+	mock "stock/handler/_mock"
+	"stock/model"
+	"stock/proto"
+
 	"github.com/golang/mock/gomock"
 )
 

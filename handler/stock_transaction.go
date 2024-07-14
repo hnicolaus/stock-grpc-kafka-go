@@ -10,7 +10,7 @@ import (
 	"encoding/json"
 	"log"
 
-	"bibit.id/challenge/model"
+	"stock/model"
 )
 
 func (h *Handler) ProcessStockTransaction(data []byte) error {

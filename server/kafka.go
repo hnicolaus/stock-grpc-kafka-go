@@ -12,8 +12,9 @@ import (
 	"os"
 	"os/signal"
 
-	"bibit.id/challenge/handler"
-	"bibit.id/challenge/model"
+	"stock/handler"
+	"stock/model"
+
 	"github.com/IBM/sarama"
 )
 

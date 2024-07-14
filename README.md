@@ -1,4 +1,4 @@
-# HansNicolausChallenge1
+# Stock
 
 ## Prerequisites
 Make sure you have installed all of the following prerequisites on your development machine:
@@ -33,4 +33,4 @@ gotest -v --race ./...
 For manual testing the GRPC server in local environment:
 - you can use any GUI client for gRPC services, some recommendations are gRPCox [ref](https://github.com/gusaul/grpcox#installation) or BloomRPC [ref](https://github.com/bloomrpc/bloomrpc)
 - please use `localhost:50051` or `0.0.0.0:50051` as the target gRPC Server.
-- bibit.proto file is provided in the root directory of this project
+- stock.proto file is provided in the root directory of this project

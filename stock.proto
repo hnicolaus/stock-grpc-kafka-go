@@ -4,7 +4,7 @@ package proto;
 
 option go_package = "/proto";
 
-service Bibit {
+service Stock {
     rpc GetStockSummary (GetStockSummaryRequest) returns (GetStockSummaryResponse);
 }
 

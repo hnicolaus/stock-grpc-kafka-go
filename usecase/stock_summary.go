@@ -8,7 +8,7 @@ package usecase
 import (
 	"context"
 
-	"bibit.id/challenge/model"
+	"stock/model"
 )
 
 func (uc *Usecase) UpdateStockSummary(ctx context.Context, transaction model.Transaction) error {

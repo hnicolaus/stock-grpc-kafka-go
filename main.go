@@ -10,16 +10,17 @@ import (
 	"os/signal"
 	"path/filepath"
 
-	"bibit.id/challenge/handler"
-	"bibit.id/challenge/model"
-	"bibit.id/challenge/repo"
-	"bibit.id/challenge/server"
-	"bibit.id/challenge/usecase"
+	"stock/handler"
+	"stock/model"
+	"stock/repo"
+	"stock/server"
+	"stock/usecase"
+
 	"gopkg.in/yaml.v2"
 )
 
 const (
-	fileName = "bibit.local.yaml"
+	fileName = "stock.local.yaml"
 )
 
 func main() {
