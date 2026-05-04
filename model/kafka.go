@@ -7,6 +7,7 @@ package model
 
 import (
 	"github.com/IBM/sarama"
+	"log"
 )
 
 type Consumer struct {
@@ -29,7 +30,10 @@ func (consumer *Consumer) ConsumeClaim(session sarama.ConsumerGroupSession, clai
 			return nil
 		}
 
-		_ = consumer.Handler(message.Value)
+		if err := consumer.Handler(message.Value); err != nil {
+			log.Printf("[Error][Kafka] failed processing message: %v", err)
+			return err
+		}
 
 		session.MarkMessage(message, "")
 	}
